@@ -1,0 +1,24 @@
+{
+  "name": "crud-api-nodejs",
+  "version": "1.0.0",
+  "description": "API NodeJS CRUD usando Express, Nodemon, Middleware e MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunosansp/crud-api-nodejs.git"
+  },
+  "keywords": [],
+  "author": "Bruno Santos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brunosansp/crud-api-nodejs/issues"
+  },
+  "homepage": "https://github.com/brunosansp/crud-api-nodejs#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.14"
+  }
+}
