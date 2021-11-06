@@ -1,14 +1,60 @@
 const express = require('express')
 const app = express()
 
+const { products, books } = require('./data')
+
 app.listen(5000, () => {
     console.log("Server is listening on port 5000")
 })
 
+// Listando todos os produtos sem exibir o price
 app.get('/api/products', (req, res) => {
-    res.json([
-        { name: 'iPhone', price: 800 },
-        { name: 'iPad', price: 650 },
-        { name: 'iWatch', price: 750 }
-    ])
+    const partial_products = products.map(product => {
+        return { id: product.id, name: product.name }
+    })
+    res.json(partial_products)
+})
+
+/**
+ * Buscando um produto pelo ID
+ * E retornando erro caso o ID não exista
+ * 
+ * Exemplo de chamada => http://127.0.0.1:5000/api/products/1
+ */
+app.get('/api/products/:productID', (req, res) => {
+    const id = Number(req.params.productID)
+    const product = products.find(product => product.id === id)
+
+    if (!product) return res.status(400).send('Product not found')
+
+    res.json(product)
+})
+
+/**
+ * Buscando um produto pelo nome usando query
+ * 
+ * Exemplo de chamada => http://127.0.0.1:5000/api/query?name=iphone
+ */
+app.get('/api/query/', (req, res) => {
+    const name = req.query.name.toLowerCase()
+    const product_result = products.filter(product => product.name.toLowerCase().includes(name))
+
+    if (product_result.length < 1) return res.status(204).send('No products matched your search')
+
+    res.json(product_result)
+})
+
+/**
+ * Buscando um produto pelo nome usando query
+ * 
+ * Exemplo de chamada => http://127.0.0.1:5000/api/books/query?author=Author1
+ */
+app.get('/api/books/query/', (req, res) => {
+    const byAuthor = req.query.author.toLowerCase()
+    const bookByAuthor = books.filter(book => book.author.toLowerCase().includes(byAuthor))
+
+    if (bookByAuthor.length < 1) return res.status(204).send('No products matched your search')
+
+
+    res.json(bookByAuthor)
 })
