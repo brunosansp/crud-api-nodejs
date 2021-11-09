@@ -10,6 +10,26 @@ app.listen(5000, () => {
 app.use(express.json()) // parse json body content
 
 /**
+ * PUT = Update product
+ */
+app.put('/api/products/:productID', (req, res) => {
+    const id = Number(req.params.productID)
+    const index = products.findIndex(product => product.id === id)
+
+    if (index === -1) return res.status(404).send('Product not found')
+
+    const updateProduct = {
+        id: products[index].id,
+        name: req.body.name,
+        price: req.body.price
+    }
+
+    products[index] = updateProduct
+    res.status(200).json('Product updated')
+})
+
+
+/**
  * POST => Create product
  */
 app.post('/api/products', (req, res) => {
