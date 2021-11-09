@@ -7,6 +7,31 @@ app.listen(5000, () => {
     console.log("Server is listening on port 5000")
 })
 
+app.use(express.json()) // parse json body content
+
+/**
+ * POST => Create product
+ */
+app.post('/api/products', (req, res) => {
+    console.log(req)
+    const newProduct = {
+        id: products.length + 1,
+        name: req.body.name,
+        price: req.body.price
+    }
+    products.push(newProduct)
+    console.log(newProduct)
+    res.status(201).json(newProduct)
+})
+
+/**
+ * GET => List all
+ */
+app.get('/api/products', (req, res) => {
+    res.json(products)
+})
+
+
 // Listando todos os produtos sem exibir o price
 app.get('/api/products', (req, res) => {
     const partial_products = products.map(product => {
@@ -25,7 +50,7 @@ app.get('/api/products/:productID', (req, res) => {
     const id = Number(req.params.productID)
     const product = products.find(product => product.id === id)
 
-    if (!product) return res.status(400).send('Product not found')
+    if (!product) return res.status(404).send('Product not found')
 
     res.json(product)
 })
